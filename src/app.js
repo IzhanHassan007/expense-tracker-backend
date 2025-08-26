@@ -14,16 +14,16 @@ const categoryRoutes = require('./routes/category.routes');
 
 const app = express();
 
-// Security, compression, CORS, logging
+// ✅ Security, compression, CORS, logging
 app.use(helmet());
 app.use(compression());
-app.use(cors({ origin: corsOrigin.split(','), credentials: false }));
+app.use(cors({ origin: corsOrigin ? corsOrigin.split(',') : '*', credentials: false }));
 app.use(morgan(nodeEnv === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '1mb' }));
 
 // ✅ Root & Health endpoints
 app.get('/', (req, res) => {
-  res.send('🚀 Expense Tracker Backend is running!');
+  res.send('🚀 Expense Tracker Backend is running on Render!');
 });
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
@@ -35,7 +35,9 @@ app.use('/api/categories', rateLimit.generalLimiter, categoryRoutes);
 
 // ❌ 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Route not found' } });
+  res.status(404).json({
+    error: { code: 'NOT_FOUND', message: 'Route not found' }
+  });
 });
 
 // ✅ Central error handler
