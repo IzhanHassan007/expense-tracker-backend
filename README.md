@@ -50,3 +50,7 @@ GET http://localhost:8080/health -> { "status": "ok" }
 - `POST /api/categories` — protected
 
 
+
+
+
+
